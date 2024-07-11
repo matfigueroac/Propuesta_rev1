@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta de Gobierno Regional Tarapacá</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #212529;
+            margin-bottom: 20px;
+        }
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .nav-button {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+        }
+        .nav-button.active {
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        .nav-button span {
+            background-color: white;
+            color: #333;
+            border-radius: 50%;
+            padding: 3px 8px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            color: white;
+            background-color: #007bff;
+        }
+        .card-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .card-content {
+            padding: 15px;
+        }
+        .proposal-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        .proposal-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .proposal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #dee2e6;
+            background-color: #ffffff;
+        }
+        .proposal-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .proposal-content {
+            padding: 10px 15px;
+        }
+        .proposal-details {
+            display: none;
+            padding-top: 10px;
+        }
+        .proposal-details.expanded {
+            display: block;
+        }
+        .proposal-details ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
+            .nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="animate-fade-in">Propuesta de Gobierno Regional Tarapacá</h1>
+        <div id="navbar" class="navbar animate-fade-in"></div>
+        <div id="selectedArea" class="card animate-fade-in"></div>
+    </div>
+
+    <script>
+        const areas = [
+            {
+                nombre: "Desarrollo Económico y Empleo",
+                icono: "briefcase",
+                color: "#FF6B6B",
+                propuestas: [
+                    {
+                        nombre: "Centro de Innovación y Emprendimiento",
+                        descripcion: "Crear un Centro Regional en Iquique con recursos y apoyo para startups y emprendedores locales.",
+                        detalles: [
+                            "Espacio de coworking de 1000m²",
+                            "Programas de mentoría con expertos en negocios",
+                            "Fondo de inversión inicial de $500,000 USD",
+                            "Colaboraciones con universidades locales"
+                        ],
+                        icono: "lightbulb"
+                    },
+                    {
+                        nombre: "Escuelas de Oficios",
+                        descripcion: "Establecer escuelas en Alto Hospicio y Pica para formación en habilidades técnicas demandadas por la industria local.",
+                        detalles: [
+                            "Cursos en minería, logística y energías renovables",
+                            "Capacidad para 500 estudiantes por año",
+                            "Prácticas laborales garantizadas",
+                            "Certificaciones reconocidas a nivel nacional"
+                        ],
+                        icono: "school"
+                    },
+                    {
+                        nombre: "Programas de Empleo Juvenil",
+                        descripcion: "Desarrollar programas específicos para jóvenes, enfocados en inserción laboral y emprendimiento.",
+                        detalles: [
+                            "Subsidios para primeros empleos",
+                            "Talleres de emprendimiento para jóvenes de 18-29 años",
+                            "Programa de pasantías en empresas locales",
+                            "Asesoría personalizada en desarrollo de carrera"
+                        ],
+                        icono: "users"
+                    },
+                    {
+                        nombre: "Proyectos de Energía Renovable",
+                        descripcion: "Impulsar proyectos de energía solar y eólica en comunas como Pozo Almonte y Huara.",
+                        detalles: [
+                            "Instalación de 50MW de capacidad solar",
+                            "Creación de 200 empleos directos",
+                            "Reducción del 30% en costos energéticos para la comunidad",
+                            "Programas de capacitación en tecnologías renovables"
+                        ],
+                        icono: "leaf"
+                    },
+                    {
+                        nombre: "Fomento a PyMEs",
+                        descripcion: "Crear una red regional de apoyo a PyMEs con acceso a financiamiento, asesoría técnica y mentoría.",
+                        detalles: [
+                            "Fondo de $2 millones USD para préstamos a bajo interés",
+                            "Red de 50 mentores empresariales",
+                            "Simplificación de trámites burocráticos",
+                            "Ferias de negocios bianual para PyMEs locales"
+                        ],
+                        icono: "briefcase"
+                    }
+                ]
+            },
+            {
+                nombre: "Educación y Cultura",
+                icono: "book-open",
+                color: "#4ECDC4",
+                propuestas: [
+                    {
+                        nombre: "Construcción y Renovación de Escuelas",
+                        descripcion: "Construir nuevas escuelas en áreas rurales y renovar las existentes en áreas urbanas.",
+                        detalles: [
+                            "10 nuevas escuelas en zonas rurales",
+                            "Renovación de 20 escuelas urbanas",
+                            "Implementación de laboratorios de ciencias y tecnología",
+                            "Mejora de instalaciones deportivas"
+                        ],
+                        icono: "building"
+                    },
+                    {
+                        nombre: "Becas y Alianzas para Educación Superior",
+                        descripcion: "Establecer un programa de becas y colaboraciones con universidades.",
+                        detalles: [
+                            "500 becas anuales para estudiantes de bajos recursos",
+                            "Convenios con 5 universidades nacionales",
+                            "Programa de intercambio estudiantil",
+                            "Fondo para investigación académica"
+                        ],
+                        icono: "book-open"
+                    },
+                    {
+                        nombre: "Programas Culturales Accesibles",
+                        descripcion: "Organizar festivales culturales gratuitos y programas de educación artística.",
+                        detalles: [
+                            "Festival anual de las artes en Iquique",
+                            "Talleres de arte y música en todas las comunas",
+                            "Restauración de sitios patrimoniales",
+                            "Creación de una orquesta juvenil regional"
+                        ],
+                        icono: "camera"
+                    }
+                ]
+            },
+            {
+                nombre: "Salud y Bienestar Social",
+                icono: "heart",
+                color: "#FF8C94",
+                propuestas: [
+                    {
+                        nombre: "Ampliación de Servicios de Salud",
+                        descripcion: "Construir nuevos centros de salud en áreas rurales y ampliar servicios en hospitales existentes.",
+                        detalles: [
+                            "5 nuevos centros de salud rural",
+                            "Ampliación de 3 hospitales regionales",
+                            "Implementación de telemedicina",
+                            "Aumento de especialidades médicas disponibles"
+                        ],
+                        icono: "building"
+                    },
+                    {
+                        nombre: "Programas de Apoyo Social",
+                        descripcion: "Crear programas de asistencia económica y alimentaria para familias de bajos ingresos.",
+                        detalles: [
+                            "Subsidio alimentario para 10,000 familias",
+                            "Programa de vivienda social",
+                            "Centros de cuidado infantil gratuitos",
+                            "Asistencia legal para personas vulnerables"
+                        ],
+                        icono: "heart"
+                    },
+                    {
+                        nombre: "Promoción de la Salud",
+                        descripcion: "Lanzar campañas educativas sobre nutrición y ejercicio en escuelas, lugares de trabajo y comunidades.",
+                        detalles: [
+                            "Programa 'Escuelas Saludables' en todas las comunas",
+                            "Creación de 10 nuevos parques y áreas deportivas",
+                            "Campañas de vacunación y chequeos médicos gratuitos",
+                            "Talleres de nutrición y cocina saludable"
+                        ],
+                        icono: "users"
+                    }
+                ]
+            },
+            {
+                nombre: "Infraestructura y Transporte",
+                icono: "building",
+                color: "#45B7D1",
+                propuestas: [
+                    {
+                        nombre: "Coordinación con el Ministerio de Obras Públicas",
+                        descripcion: "Priorizar y proponer proyectos de construcción y mantenimiento de carreteras.",
+                        detalles: [
+                            "Renovación de 200 km de carreteras regionales",
+                            "Construcción de 2 nuevos puentes",
+                            "Mejora de señalización vial en toda la región",
+                            "Plan de mantenimiento preventivo de infraestructura"
+                        ],
+                        icono: "map-pin"
+                    },
+                    {
+                        nombre: "Planificación de Proyectos Viales",
+                        descripcion: "Elaborar planes de infraestructura vial en colaboración con los Municipios.",
+                        detalles: [
+                            "Creación de comité de planificación vial intermunicipal",
+                            "Estudio de flujo de tráfico en áreas urbanas",
+                            "Diseño de nuevas rutas para descongestionar ciudades",
+                            "Plan maestro de ciclovías regionales"
+                        ],
+                        icono: "map-pin"
+                    },
+                    {
+                        nombre: "Desarrollo de Sistemas de Transporte Público",
+                        descripcion: "Coordinar la implementación de nuevas rutas y servicios de transporte público.",
+                        detalles: [
+                            "Implementación de sistema de buses eléctricos en Iquique",
+                            "Creación de 5 nuevas rutas interurbanas",
+                            "Sistema de pago integrado para transporte público",
+                            "Mejora de accesibilidad para personas con movilidad reducida"
+                        ],
+                        icono: "bus"
+                    }
+                ]
+            },
+            {
+                nombre: "Seguridad Ciudadana",
+                icono: "shield-alert",
+                color: "#FFA07A",
+                propuestas: [
+                    {
+                        nombre: "Observatorio de Seguridad en Iquique",
+                        descripcion: "Establecer un observatorio para analizar, monitorear y prevenir la delincuencia.",
+                        detalles: [
+                            "Sistema de mapeo del delito en tiempo real",
+                            "Colaboración con universidades para estudios criminológicos",
+                            "Implementación de sistema de alerta temprana",
+                            "Publicación trimestral de informes de seguridad"
+                        ],
+                        icono: "alert-circle"
+                    },
+                    {
+                        nombre: "Fortalecimiento de la Policía Comunitaria",
+                        descripcion: "Implementar programas para mejorar la relación entre la policía y los residentes.",
+                        detalles: [
+                            "Creación de 20 nuevas unidades de policía comunitaria",
+                            "Programa de capacitación en resolución de conflictos",
+                            "Implementación de 'Vecino Vigilante' en todas las comunas",
+                            "Foros mensuales de seguridad ciudadana"
+                        ],
+                        icono: "users"
+                    },
+                    {
+                        nombre: "Programas de Rehabilitación",
+                        descripcion: "Desarrollar programas integrales de rehabilitación para delincuentes.",
+                        detalles: [
+                            "Centro de rehabilitación y capacitación laboral",
+                            "Programa de reinserción social para ex-reclusos",
+                            "Terapia obligatoria para ofensores juveniles",
+                            "Alianzas con empresas para empleo post-rehabilitación"
+                        ],
+                        icono: "heart"
+                    }
+                ]
+            },
+            {
+                nombre: "Medio Ambiente y Sostenibilidad",
+                icono: "leaf",
+                color: "#98D8C8",
+                propuestas: [
+                    {
+                        nombre: "Normas de Emisión",
+                        descripcion: "Establecer normas más estrictas de emisión para industrias y vehículos.",
+                        detalles: [
+                            "Reducción del 30% en emisiones industriales en 5 años",
+                            "Implementación de sistema de monitoreo de calidad del aire",
+                            "Incentivos fiscales para vehículos de baja emisión",
+                            "Programa de reforestación urbana"
+                        ],
+                        icono: "alert-circle"
+                    },
+                    {
+                        nombre: "Programas de Reciclaje",
+                        descripcion: "Establecer programas de reciclaje en todas las comunas.",
+                        detalles: [
+                            "Instalación de puntos de reciclaje en todas las comunas",
+                            "Campaña educativa sobre separación de residuos",
+                            "Creación de planta de compostaje regional",
+                            "Programa de reciclaje en escuelas y oficinas públicas"
+                        ],
+                        icono: "recycle"
+                    },
+                    {
+                        nombre: "Centro de Estudio sobre Gestión de Residuos",
+                        descripcion: "Crear un centro de estudio sobre la gestión integral de residuos.",
+                        detalles: [
+                            "Investigación en nuevas tecnologías de tratamiento de residuos",
+                            "Colaboración con universidades nacionales e internacionales",
+                            "Desarrollo de programas piloto de economía circular",
+                            "Publicación anual de informe sobre gestión de residuos"
+                        ],
+                        icono: "lightbulb"
+                    },
+                    {
+                        nombre: "Incentivos para Energías Renovables",
+                        descripcion: "Ofrecer incentivos para la instalación de paneles solares y turbinas eólicas.",
+                        detalles: [
+                            "Subsidios para instalación de paneles solares en hogares",
+                            "Desarrollo de parque eólico regional",
+                            "Programa de capacitación en tecnologías renovables",
+                            "Meta de 50% de energía renovable en edificios públicos"
+                        ],
+                        icono: "sun"
+                    }
+                ]
+            },
+            {
+                nombre: "Turismo y Patrimonio",
+                icono: "camera",
+                color: "#F9ED69",
+                propuestas: [
+                    {
+                        nombre: "Promoción Turística",
+                        descripcion: "Desarrollar una campaña de marketing regional e internacional.",
+                        detalles: [
+                            "Creación de marca turística regional",
+                            "Participación en 5 ferias internacionales de turismo",
+                            "Desarrollo de app móvil para turistas",
+                            "Alianzas con agencias de viaje internacionales"
+                        ],
+                        icono: "camera"
+                    },
+                    {
+                        nombre: "Conservación del Patrimonio",
+                        descripcion: "Implementar programas de restauración y conservación para sitios históricos y naturales.",
+                        detalles: [
+                            "Restauración de 10 sitios patrimoniales",
+                            "Creación de ruta del patrimonio industrial salitrero",
+                            "Programa de voluntariado para conservación",
+                            "Digitalización de archivos históricos regionales"
+                        ],
+                        icono: "landmark"
+                    },
+                    {
+                        nombre: "Turismo Innovador",
+                        descripcion: "Desarrollar productos turísticos innovadores como rutas temáticas.",
+                        detalles: [
+                            "Creación de ruta gastronómica regional",
+                            "Desarrollo de circuito de turismo astronómico",
+                            "Implementación de tours de realidad aumentada",
+                            "Fomento al turismo de aventura en el altiplano"
+                        ],
+                        icono: "compass"
+                    },
+                    {
+                        nombre: "Ruta del Indígena",
+                        descripcion: "Crear la 'Ruta del Indígena' que destaque la historia y cultura de las etnias indígenas.",
+                        detalles: [
+                            "Mapeo de sitios culturales indígenas significativos",
+                            "Colaboración con comunidades locales para el desarrollo de la ruta",
+                            "Creación de centro de interpretación cultural indígena",
+                            "Programa de capacitación para guías locales indígenas"
+                        ],
+                        icono: "map"
+                    }
+                ]
+            },
+            {
+                nombre: "Innovación y Tecnología",
+                icono: "cpu",
+                color: "#B39DDB",
+                propuestas: [
+                    {
+                        nombre: "Digitalización de Servicios Públicos",
+                        descripcion: "Implementar plataformas digitales para trámites y servicios públicos en línea.",
+                        detalles: [
+                            "Desarrollo de plataforma única de servicios públicos online",
+                            "Implementación de sistema de firma electrónica",
+                            "Capacitación digital para funcionarios públicos",
+                            "Creación de kioscos de autoservicio en áreas rurales"
+                        ],
+                        icono: "smartphone"
+                    },
+                    {
+                        nombre: "Apoyo a Startups",
+                        descripcion: "Crear un Fondo Regional de inversión y establecer incubadoras para startups tecnológicas.",
+                        detalles: [
+                            "Fondo de inversión de $5 millones USD para startups locales",
+                            "Creación de 3 incubadoras tecnológicas en la región",
+                            "Programa de mentoría con expertos nacionales e internacionales",
+                            "Organización de hackathons anuales para fomentar la innovación"
+                        ],
+                        icono: "lightbulb"
+                    },
+                    {
+                        nombre: "Educación Tecnológica",
+                        descripcion: "Promover la creación de laboratorios de innovación en colaboración con universidades.",
+                        detalles: [
+                            "Implementación de laboratorios de robótica en 20 escuelas",
+                            "Cursos de programación gratuitos para jóvenes",
+                            "Alianzas con empresas tecnológicas para prácticas estudiantiles",
+                            "Creación de un centro regional de investigación en IA"
+                        ],
+                        icono: "code"
+                    }
+                ]
+            }
+        ];
+
+        let selectedArea = areas[0];
+        let expandedProposal = null;
+
+        function renderNavbar() {
+            const navbar = document.getElementById('navbar');
+            navbar.innerHTML = areas.map((area, index) => `
+                <button onclick="selectArea(${index})" class="nav-button ${area === selectedArea ? 'active' : ''}" style="background-color: ${area.color}">
+                    <i data-lucide="${area.icono}" class="w-6 h-6 mr-3"></i>
+                    ${area.nombre}
+                    <span>${area.propuestas.length}</span>
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderSelectedArea() {
+            const selectedAreaElement = document.getElementById('selectedArea');
+            selectedAreaElement.innerHTML = `
+                <div class="card-header" style="background-color: ${selectedArea.color}">
+                    <div class="card-title">
+                        <i data-lucide="${selectedArea.icono}" class="w-8 h-8 mr-3"></i>
+                        ${selectedArea.nombre}
+                    </div>
+                    <span>${selectedArea.propuestas.length} propuestas</span>
+                </div>
+                <div class="card-content">
+                    ${selectedArea.propuestas.map((propuesta, index) => `
+                        <div class="proposal-card" onclick="toggleProposal(${index})">
+                            <div class="proposal-header">
+                                <div class="proposal-title">
+                                    <i data-lucide="${propuesta.icono}" class="w-6 h-6 mr-2" style="color: ${selectedArea.color}"></i>
+                                    ${propuesta.nombre}
+                                </div>
+                                <i data-lucide="${expandedProposal === index ? 'chevron-up' : 'chevron-down'}" class="w-6 h-6"></i>
+                            </div>
+                            <div class="proposal-content">
+                                <p>${propuesta.descripcion}</p>
+                                <div class="proposal-details ${expandedProposal === index ? 'expanded' : ''}">
+                                    <ul>
+                                        ${propuesta.detalles.map(detalle => `<li>${detalle}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function selectArea(index) {
+            selectedArea = areas[index];
+            expandedProposal = null;
+            renderNavbar();
+            renderSelectedArea();
+        }
+
+        function toggleProposal(index) {
+            expandedProposal = expandedProposal === index ? null : index;
+            renderSelectedArea();
+        }
+
+        // Initial render
+        renderNavbar();
+        renderSelectedArea();
+    </script>
+</body>
+</html>
